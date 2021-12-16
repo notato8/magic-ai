@@ -6,11 +6,28 @@
 	objectVersion = 55;
 	objects = {
 
+/* Begin PBXFileReference section */
+		EAAD752D276AEF160007C54C /* index.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = index.js; sourceTree = "<group>"; };
+		EAAD752E276AEF470007C54C /* package.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = package.json; sourceTree = "<group>"; };
+		EAAD752F276AEF6B0007C54C /* war-of-the-spark.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "war-of-the-spark.json"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
 /* Begin PBXGroup section */
 		EAAD7526276AEEBE0007C54C = {
 			isa = PBXGroup;
 			children = (
+				EAAD7531276AF0A10007C54C /* sets */,
+				EAAD752E276AEF470007C54C /* package.json */,
+				EAAD752D276AEF160007C54C /* index.js */,
 			);
+			sourceTree = "<group>";
+		};
+		EAAD7531276AF0A10007C54C /* sets */ = {
+			isa = PBXGroup;
+			children = (
+				EAAD752F276AEF6B0007C54C /* war-of-the-spark.json */,
+			);
+			path = sets;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

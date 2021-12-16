@@ -1,0 +1,27 @@
+{
+    "plains": {
+        "supertypes": ["Basic"],
+        "types": ["Land"],
+        "subtypes": ["Plains"],
+    },
+    "island": {
+        "supertypes": ["Basic"],
+        "types": ["Land"],
+        "subtypes": ["Island"],
+    },
+    "swamp": {
+        "supertypes": ["Basic"],
+        "types": ["Land"],
+        "subtypes": ["Swamp"],
+    },
+    "mountain": {
+        "supertypes": ["Basic"],
+        "types": ["Land"],
+        "subtypes": ["Mountain"],
+    },
+    "forest": {
+        "supertypes": ["Basic"],
+        "types": ["Land"],
+        "subtypes": ["Forest"],
+    }
+}
