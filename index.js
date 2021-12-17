@@ -41,18 +41,16 @@ function performAllStateBasedActions() {
     })
    //704.5s-t here
 };
-
 const triggers = [
     //array of functions?
     //or objects also with a flag to determine if they have been triggered
 ];
 
-function Spell(card) {}
+function Spell(card) {} //may need to be merged with Card
 Spell.prototype.resolve = function () {
     stack.splice(stack.indexOf(this), 1);
 };
-
-function Ability(ability) {}
+function Ability(ability) {} //may need to be merged with Card
 Ability.prototype.resolve = function () {
     stack.splice(stack.indexOf(this), 1);
 };
@@ -61,13 +59,14 @@ function Deck(availableCards = cardSet) {
     while (this.length < 60) {
         availableCards = availableCards.filter(card => {
             return (
-                card.supertypes?.includes("Basic") ||
+                card.prototype.supertypes?.includes("Basic") ||
                 this.reduce((count, deckCard) => {
-                    return card == deckCard ? count + 1 : count;
+                    return Object.getPrototypeOf(deckCard) == card.prototype ? count + 1 : count;
                 }, 0) < 4
             )
         });
-        this.push(availableCards[Math.floor(Math.random() * availableCards.length)]);
+        
+        this.push(new availableCards[Math.floor(Math.random() * availableCards.length)]);
     }
 };
 Object.setPrototypeOf(Deck.prototype, Array.prototype);
@@ -82,8 +81,8 @@ Deck.prototype.shuffle = function () {
     }
 };
 
-function Permanent() {}
-Permanent.prototype.tap = function () { //should this be a player method instead?
+function Permanent() {} //may need to be merged with Card
+Permanent.prototype.tap = function () { //should this be a player method instead? or both?
     this.isTapped = true;
 }
 Permanent.prototype.untap = function () {
@@ -120,8 +119,8 @@ Player.prototype.activate = function (permanent, ability) {
 Player.prototype.pass = function () {
     const nonactivePlayer = players.find(player => player != activePlayer);
     if (nonactivePlayer.passed === false) {
-        nonactivePlayer.getPriority();
         this.passed = true;
+        nonactivePlayer.getPriority();
     } else if (stack.length > 0) {
         stack[stack.length - 1].resolve();
     } else {

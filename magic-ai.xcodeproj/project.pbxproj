@@ -7,14 +7,12 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		EA77FC51276D04D600627679 /* war-of-the-spark-new.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = "war-of-the-spark-new.js"; sourceTree = "<group>"; };
+		EA77FC51276D04D600627679 /* war-of-the-spark.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = "war-of-the-spark.js"; sourceTree = "<group>"; };
 		EA83C914276BABED00ED5A3E /* index.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = index.js; sourceTree = "<group>"; };
-		EA83C915276BADD300ED5A3E /* guilds-of-ravnica.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = "guilds-of-ravnica.js"; sourceTree = "<group>"; };
 		EAAD752D276AEF160007C54C /* index.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = index.js; sourceTree = "<group>"; };
 		EAAD752E276AEF470007C54C /* package.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = package.json; sourceTree = "<group>"; };
-		EAAD752F276AEF6B0007C54C /* war-of-the-spark.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = "war-of-the-spark.js"; sourceTree = "<group>"; };
 		EAEF55DA276D054900C39371 /* card.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = card.js; sourceTree = "<group>"; };
-		EAEF55DC276D15D900C39371 /* guilds-of-ravnica-new.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = "guilds-of-ravnica-new.js"; sourceTree = "<group>"; };
+		EAEF55DC276D15D900C39371 /* guilds-of-ravnica.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = "guilds-of-ravnica.js"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -31,11 +29,9 @@
 		EAAD7531276AF0A10007C54C /* sets */ = {
 			isa = PBXGroup;
 			children = (
-				EAAD752F276AEF6B0007C54C /* war-of-the-spark.js */,
-				EA83C915276BADD300ED5A3E /* guilds-of-ravnica.js */,
 				EA83C914276BABED00ED5A3E /* index.js */,
-				EA77FC51276D04D600627679 /* war-of-the-spark-new.js */,
-				EAEF55DC276D15D900C39371 /* guilds-of-ravnica-new.js */,
+				EA77FC51276D04D600627679 /* war-of-the-spark.js */,
+				EAEF55DC276D15D900C39371 /* guilds-of-ravnica.js */,
 			);
 			path = sets;
 			sourceTree = "<group>";
