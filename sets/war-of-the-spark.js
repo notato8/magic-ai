@@ -1,83 +1,75 @@
-import Card from "../prototypes/card.js";
+import Card from "../classes/card.js";
 
 
-function KarnTheGreatCreator() {};
-function UginTheIneffable() {};
-function UginsConjurant() {};
-function Plains() {};
-function Island() {};
-function Swamp() {};
-function Mountain() {};
-function Forest() {};
-
-const cards = [
-    KarnTheGreatCreator,
-    UginTheIneffable,
-    UginsConjurant,
-    Plains,
-    Island,
-    Swamp,
-    Mountain,
-    Forest
-]
-
-
-cards.forEach(card => Object.setPrototypeOf(card, Card));
-
-Object.assign(KarnTheGreatCreator.prototype, {
-    name: "Karn, the Great Creator",
-    cost: { mana: { generic: 4 } },
-    supertypes: ["Legendary"],
-    types: ["Planeswalker"],
-    subtypes: ["Karn"],
-    loyalty: 5,
-});
-Object.assign(UginTheIneffable.prototype, {
-    name: "Ugin, the Ineffable",
-    cost: { mana: { generic: 6 } },
-    supertypes: ["Legendary"],
-    types: ["Planeswalker"],
-    subtypes: ["Ugin"],
-    loyalty: 4,
-});
-Object.assign(UginsConjurant.prototype, {
-    name: "Ugin's Conjurant",
-    cost: { mana: { x: 1 } },
-    types: ["Creature"],
-    subtypes: ["Spirit", "Monk"],
-    power: 0,
-    toughness: 0
-});
-Object.assign(Plains.prototype, {
-    name: "Plains",
-    supertypes: ["Basic"],
-    types: ["Land"],
-    subtypes: ["Plains"],
-});
-Object.assign(Island.prototype, {
-    name: "Island",
-    supertypes: ["Basic"],
-    types: ["Land"],
-    subtypes: ["Island"],
-});
-Object.assign(Swamp.prototype, {
-    name: "Swamp",
-    supertypes: ["Basic"],
-    types: ["Land"],
-    subtypes: ["Swamp"],
-});
-Object.assign(Mountain.prototype, {
-    name: "Mountain",
-    supertypes: ["Basic"],
-    types: ["Land"],
-    subtypes: ["Mountain"],
-});
-Object.assign(Forest.prototype, {
-    name: "Forest",
-    supertypes: ["Basic"],
-    types: ["Land"],
-    subtypes: ["Forest"],
-});
-
-
-export default cards;
+export default [
+    class extends Card {
+        constructor(zone) { super(zone); }
+    
+        static name = "Karn, the Great Creator";
+        static cost = { mana: { generic: 4 } };
+        static supertypes = ["Legendary"];
+        static types = ["Planeswalker"];
+        static subtypes = ["Karn"];
+        static loyalty = 5;
+    },
+    class extends Card {
+        constructor(zone) { super(zone); }
+    
+        static name = "Ugin, the Ineffable";
+        static cost = { mana: { generic: 6 } };
+        static supertypes = ["Legendary"];
+        static types = ["Planeswalker"];
+        static subtypes = ["Ugin"];
+        static loyalty = 4;
+    },
+    class extends Card {
+        constructor(zone) { super(zone); }
+    
+        static name = "Ugin's Conjurant";
+        static cost = { mana: { x: 1 } };
+        static types = ["Creature"];
+        static subtypes = ["Spirit", "Monk"];
+        static power = 0;
+        static toughness = 0;
+    },
+    class extends Card {
+        constructor(zone) { super(zone); }
+    
+        static name = "Plains";
+        static supertypes = ["Basic"];
+        static types = ["Land"];
+        static subtypes = ["Plains"];
+    },
+    class extends Card {
+        constructor(zone) { super(zone); }
+    
+        static name = "Island";
+        static supertypes = ["Basic"];
+        static types = ["Land"];
+        static subtypes = ["Island"];
+    },
+    class extends Card {
+        constructor(zone) { super(zone); }
+    
+        static name = "Swamp";
+        static supertypes = ["Basic"];
+        static types = ["Land"];
+        static subtypes = ["Swamp"];
+    },
+    class extends Card {
+        constructor(zone) { super(zone); }
+    
+        static name = "Mountain";
+        static supertypes = ["Basic"];
+        static types = ["Land"];
+        static subtypes = ["Mountain"];
+    },
+    class extends Card {
+        constructor(zone) { super(zone); }
+    
+        static name = "Forest";
+        static supertypes = ["Basic"];
+        static types = ["Land"];
+        static subtypes = ["Forest"];
+    }
+];

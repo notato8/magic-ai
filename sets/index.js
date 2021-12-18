@@ -7,6 +7,6 @@ export default [
     ...guildsOfRavnica
 ].filter((a, index, array) => {
     return index === array.indexOf(array.find(b => {
-        return b.prototype.name === a.prototype.name;
+        return b.name === a.name;
     }))
 })

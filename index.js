@@ -1,4 +1,5 @@
 import cardSet from "./sets/index.js";
+import * as choices from "./choices.js"; //weird
 
 
 function performAllStateBasedActions() {
@@ -46,93 +47,105 @@ const triggers = [
     //or objects also with a flag to determine if they have been triggered
 ];
 
-function Spell(card) {} //may need to be merged with Card
-Spell.prototype.resolve = function () {
-    stack.splice(stack.indexOf(this), 1);
-};
-function Ability(ability) {} //may need to be merged with Card
-Ability.prototype.resolve = function () {
-    stack.splice(stack.indexOf(this), 1);
-};
-
-function Deck(availableCards = cardSet) {
-    while (this.length < 60) {
-        availableCards = availableCards.filter(card => {
-            return (
-                card.prototype.supertypes?.includes("Basic") ||
-                this.reduce((count, deckCard) => {
-                    return Object.getPrototypeOf(deckCard) == card.prototype ? count + 1 : count;
-                }, 0) < 4
-            )
-        });
-        
-        this.push(new availableCards[Math.floor(Math.random() * availableCards.length)]);
-    }
-};
-Object.setPrototypeOf(Deck.prototype, Array.prototype);
-Deck.prototype.shuffle = function () {
-    let m = this.length;
-    let t, i;
-    while (m) {
-        i = Math.floor(Math.random() * m--);
-        t = this[m];
-        this[m] = this[i];
-        this[i] = t;
-    }
-};
-
-function Permanent() {} //may need to be merged with Card
-Permanent.prototype.tap = function () { //should this be a player method instead? or both?
-    this.isTapped = true;
-}
-Permanent.prototype.untap = function () {
-    this.isTapped = false;
-}
-
-function Player() {
-    this.deck = new Deck();
-}
-Player.prototype.draw = function (n = 1) {
-    this.hand = this.hand || [];
-    if (this.library.length > 0) {
-        this.hand.push(this.library.pop());
-        if (n > 1) {
-            this.draw(n - 1);
+class Zone extends Array { //maybe make this "ordered zone" for deck & graveyard
+    send(startIndex, count = 1, destination, bottom = false) {
+        for (let i = 0; i < count; i++) {
+            switch (bottom) { //define the function outside the loop
+                case false:
+                    destination.push(this[startIndex + i]);
+                    break;
+                case true:
+                    destination.unshift(this[startIndex + i]);
+                    break;
+            }
         }
-    } else {
-        this.attemptedToDrawCardFromLibraryWithNoCardsInIt = true;
+        this.splice(startIndex, count);
+    }
+
+    get topIndex() {
+        return this.length - 1;
+    }
+    
+    get bottomIndex() {
+        return 0;
     }
 }
-Player.prototype.getPriority = function () {
-    performAllStateBasedActions();
-    this.passed = false;
-}
-Player.prototype.cast = function (card) {
-    card.zone.splice(card.zone.indexOf(card), 1); //maybe the wrong way to do this
-    stack.push(new Spell(card));
-    this.getPriority();
-}
-Player.prototype.activate = function (permanent, ability) {
-    stack.push(new Ability(ability));
-    this.getPriority();
-}
-Player.prototype.pass = function () {
-    const nonactivePlayer = players.find(player => player != activePlayer);
-    if (nonactivePlayer.passed === false) {
-        this.passed = true;
-        nonactivePlayer.getPriority();
-    } else if (stack.length > 0) {
-        stack[stack.length - 1].resolve();
-    } else {
-        players.forEach(player => player.mana = {});
+class Deck extends Zone {
+    constructor(availableCards = []) {
+        super();
+    
+        while (this.length < 60 && availableCards.length > 0) {
+            availableCards = availableCards.filter(card => {
+                return (
+                    card.supertypes?.includes("Basic") ||
+                    this.reduce((count, deckCard) => {
+                        return deckCard.constructor == card ? count + 1 : count;
+                    }, 0) < 4
+                )
+            });
+            
+            this.push(new availableCards[Math.floor(Math.random() * availableCards.length)](this));
+        }
     }
+    
+    shuffle() {
+        let m = this.length;
+        let t, i;
+        while (m) {
+            i = Math.floor(Math.random() * m--);
+            t = this[m];
+            this[m] = this[i];
+            this[i] = t;
+        }
+    }
+};
+
+class Player {
+    constructor() {
+        this.deck = new Deck(cardSet);
+        this.hand = new Zone();
+        this.graveyard = new Zone();
+    }
+    
+    draw(n = 1) {
+        if (this.library.length > 0) {
+            this.library.send(this.library.topIndex, 1, this.hand)
+            if (n > 1) {
+                this.draw(n - 1);
+            }
+        } else {
+            this.attemptedToDrawCardFromLibraryWithNoCardsInIt = true;
+        }
+    }
+    getPriority() {
+        performAllStateBasedActions();
+        this.passed = false;
+    }
+    cast(card) {
+        this.getPriority();
+    }
+    activate(permanent, ability) {
+        stack.push(new Ability(ability));
+        this.getPriority();
+    }
+    pass() {
+        const nonactivePlayer = players.find(player => player != activePlayer);
+        if (nonactivePlayer.passed === false) {
+            this.passed = true;
+            nonactivePlayer.getPriority();
+        } else if (stack.length > 0) {
+            stack[stack.length - 1].resolve();
+        } else {
+            players.forEach(player => player.mana = {});
+        }
+    }
+    lose() {}
 }
-Player.prototype.lose = function () {}
 
 
 const players = [ new Player(), new Player() ];
-const battlefield = [], stack = [], exile = [];
-const zones = [
+const battlefield = new Zone(), stack = new Zone(), exile = new Zone();
+const zones = [ //might not be necessary for state-based actions
     players[0].library,
     players[1].library,
     players[0].hand,
@@ -143,7 +156,6 @@ const zones = [
     stack,
     exile
 ];
-const startingPlayer = players[ Math.floor( Math.random() * 2 ) ];
 players.forEach(player => {
     player.deck.shuffle();
     player.library = player.deck;
@@ -151,10 +163,25 @@ players.forEach(player => {
     player.draw(7);
 });
 
-//mulligan
+while (!players.every(player => player.willMulligan === false)) { // Mulligan
+    players.filter(player => player.willMulligan !== false).forEach(player => {
+        choices.mulligan(player);
+    });
+    players.filter(player => player.willMulligan).forEach(player => {
+        player.hand.send(0, player.hand.length, player.library);
+        player.library.shuffle();
+        player.draw(7);
+        player.numberOfMulligans = 1 + (player.numberOfMulligans || 0);
+        for (let i = 0; i < player.numberOfMulligans; i++) {
+            player.hand.send(choices.card(player.hand), 1, player.library, true);
+        }
+    });
+}
 
-let activePlayer = startingPlayer;
+let activePlayer = players[0];
 let firstTurn = true;
+
+
 while (true) {
     // Beginning Phase
     activePlayer.permanents?.forEach(permanent => { //redo this using zones
