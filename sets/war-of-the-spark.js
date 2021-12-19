@@ -3,7 +3,7 @@ import Card from "../classes/card.js";
 
 export default [
     class extends Card {
-        constructor(zone) { super(zone); }
+        constructor(zone) { super(zone); } //are these necessary?
     
         static name = "Karn, the Great Creator";
         static cost = { mana: { generic: 4 } };
